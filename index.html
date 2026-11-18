@@ -242,8 +242,17 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        // Konfigurasi Firebase Anda yang terhubung langsung ke project "roket-kebaikan"
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8tALqPK873PWNCclzWEmqY086Y8o4-0Y",
+            authDomain: "roket-kebaikan.firebaseapp.com",
+            projectId: "roket-kebaikan",
+            storageBucket: "roket-kebaikan.firebasestorage.app",
+            messagingSenderId: "4936108056",
+            appId: "1:4936108056:web:6002d0c631d20a7358db6d"
+        };
+
+        const appId = "roket-kebaikan-muadzah-app";
 
         let db, auth;
         let isSyncing = false;
@@ -254,7 +263,7 @@
                 db = getFirestore(app);
                 auth = getAuth(app);
 
-                // Pastikan sesi login disimpan secara lokal agar tidak reset saat iframe/halaman direfresh
+                // Pastikan sesi login disimpan secara lokal agar stabil saat halaman direfresh
                 await setPersistence(auth, browserLocalPersistence);
 
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
