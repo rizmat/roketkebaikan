@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papan Bintang Mu'azza & Miqdad</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Fredoka (Font ramah anak yang bulat dan ceria) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka', cursive, sans-serif;
+            background-color: #0f172a;
+        }
+        .bouncy {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bouncy:hover {
+            transform: translateY(-3px);
+        }
+        .bouncy:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-slate-950 via-indigo-950 to-purple-950 min-h-screen text-slate-100 pb-10">
+
+    <!-- Container Utama -->
+    <div class="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
+        
+        <!-- Header Ceria -->
+        <header class="text-center mb-8 pt-4">
+            <div class="inline-block bg-indigo-600/80 text-yellow-300 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full shadow-lg mb-3 border-2 border-indigo-400">
+                ✨ Misi Luar Angkasa Muadzah & Miqdad ✨
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-yellow-300 to-sky-400 drop-shadow-md mb-2">Roket Kebaikan Muadzah & Miqdad</h1>
+            <p class="text-indigo-200 text-sm sm:text-base font-medium">Kumpulkan poin kebaikan sebanyak-banyaknya agar roketnya bisa meluncur ke angkasa!</p>
+        </header>
+
+        <!-- Banner Pemenang (Tersembunyi Awalnya) -->
+        <div id="winner-banner" class="hidden mb-8 bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-400 text-slate-950 p-6 sm:p-8 rounded-3xl shadow-2xl text-center border-4 border-white animate-bounce">
+            <div class="text-5xl mb-2">👑🎉🥳</div>
+            <h2 class="text-2xl sm:text-4xl font-black mb-2" id="winner-title">HORE! JUARANYA TELAH TIBA!</h2>
+            <p class="text-lg sm:text-xl font-bold mb-4" id="winner-desc">Anak hebat berhasil menyentuh angka 100 poin!</p>
+            <button onclick="resetGame()" class="bg-white text-orange-600 font-extrabold px-8 py-3 rounded-full shadow-lg hover:bg-orange-50 transition transform hover:scale-105">✨ Mulai Petualangan Baru ✨</button>
+        </div>
+
+        <!-- Modal Pop-up Kemenangan Otomatis -->
+        <div id="winner-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md hidden items-center justify-center p-4 z-50 animate-fade-in">
+            <div class="bg-gradient-to-b from-amber-100 via-white to-yellow-50 rounded-3xl max-w-md w-full p-8 text-center shadow-2xl border-4 border-amber-400 transform scale-100 transition-transform">
+                <div class="flex justify-center mb-3">
+                    <div class="w-24 h-24 rounded-full border-4 border-amber-400 shadow-lg overflow-hidden bg-white animate-bounce">
+                        <img id="modal-winner-img" src="" class="w-full h-full object-cover" alt="Juara" />
+                    </div>
+                </div>
+                <div class="text-4xl mb-1">🏆✨</div>
+                <h3 class="text-2xl sm:text-3xl font-black text-amber-600 mb-2" id="modal-winner-title">LUAR BIASA!</h3>
+                <p class="text-slate-700 text-base sm:text-lg mb-6 font-bold" id="modal-winner-desc">Selamat kepada sang jagoan yang meraih 100 poin pertama!</p>
+                <button onclick="closeWinnerModal()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black py-3.5 rounded-2xl shadow-lg transition transform hover:scale-105">Yey! Lanjutkan Rayakan! 🎉</button>
+            </div>
+        </div>
+
+        <!-- Kartu Progress Bar Dominan & Aksi Cepat (Card 1) -->
+        <div class="bg-slate-900/90 backdrop-blur rounded-3xl shadow-2xl p-6 sm:p-10 mb-6 border-4 border-indigo-500/50">
+            
+            <!-- Grid Responsif: Disandingkan di layar besar, vertikal di HP -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Baris Muadzah (Pink Theme - Dominant Progress) -->
+                <div class="bg-slate-800/80 p-6 rounded-3xl border-3 border-pink-400/60 shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                            <div class="flex items-center gap-3">
+                                <!-- Avatar Foto / Icon Muadzah dengan tombol upload -->
+                                <div class="relative group cursor-pointer" onclick="document.getElementById('file-input-1').click()" title="Klik untuk ganti foto">
+                                    <div id="avatar-container-1" class="w-12 h-12 rounded-full bg-pink-500/30 border-2 border-pink-400 flex items-center justify-center overflow-hidden shadow-inner">
+                                        <span id="avatar-icon-1" class="text-2xl hidden">🌸</span>
+                                        <img id="avatar-img-1" src="image_f4199b.jpg" class="w-full h-full object-cover" alt="Muadzah" />
+                                    </div>
+                                    <div class="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[10px] font-bold">Ubah</div>
+                                </div>
+                                <input type="file" id="file-input-1" accept="image/*" class="hidden" onchange="handleImageUpload(event, 1)">
+                                <span class="text-2xl font-black text-pink-300" id="display-child1">Muadzah</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-900 px-4 py-1.5 rounded-2xl border-2 border-pink-500/40 shadow-sm">
+                                <span class="text-xs font-bold text-pink-400 uppercase">Poin:</span>
+                                <span class="text-2xl sm:text-3xl font-black text-pink-300" id="score-child1">0</span>
+                                <span class="text-xs font-bold text-pink-500">/ 100</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ilustrasi Roket & Progress Bar Vertikal Muadzah -->
+                        <div class="mb-6 flex justify-center">
+                            <div class="w-full h-[315px] sm:h-[390px] bg-slate-950/70 rounded-2xl border-3 border-pink-500/40 shadow-inner relative flex items-center justify-center p-4 overflow-hidden">
+                                <!-- Track Pill Vertikal -->
+                                <div class="w-20 h-full bg-slate-900 rounded-full relative overflow-visible flex flex-col justify-end shadow-inner border-2 border-pink-500/50">
+                                    <!-- Bagian yang terisi dari bawah -->
+                                    <div id="progress-bar-fill-1" class="w-full bg-gradient-to-t from-pink-600 via-pink-500 to-rose-400 rounded-full transition-all duration-500 relative" style="height: 0%"></div>
+                                    
+                                    <!-- Roket yang berada tepat di permukaan atas progress bar -->
+                                    <div id="rocket-wrapper-1" class="absolute left-1/2 -translate-x-1/2 transition-all duration-500 z-20" style="bottom: 0px;">
+                                        <svg viewBox="0 0 100 140" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-lg overflow-visible">
+                                            <!-- Api Pendorong (Flame) -->
+                                            <g id="flame-group-1" opacity="0" class="transition-all duration-300">
+                                                <path d="M 43 100 L 50 130 L 57 100 Z" fill="#f97316"/>
+                                                <path d="M 46 100 L 50 120 L 54 100 Z" fill="#fde047"/>
+                                            </g>
+                                            <!-- Sayap / Fins Roket -->
+                                            <polygon points="35,80 43,70 43,100" fill="#ec4899"/>
+                                            <polygon points="65,80 57,70 57,100" fill="#ec4899"/>
+                                            <!-- Badan Roket -->
+                                            <rect x="43" y="50" width="14" height="50" rx="7" fill="#ffffff" stroke="#ec4899" stroke-width="2.5"/>
+                                            <!-- Ujung Kerucut Roket -->
+                                            <path d="M 50 25 L 57 52 L 43 52 Z" fill="#ec4899"/>
+                                            <!-- Jendela Porthole -->
+                                            <circle cx="50" cy="65" r="4.5" fill="#38bdf8" stroke="#cbd5e1" stroke-width="2"/>
+                                            <!-- Hiasan Bintang di Roket -->
+                                            <text x="46" y="85" class="text-[9px]">💖</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-3 right-4 text-xs font-black text-pink-300 bg-slate-900/90 backdrop-blur px-3 py-1 rounded-xl shadow-sm border border-pink-500/40">
+                                    <span id="progress-percent-1">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Cepat Muadzah -->
+                    <div class="pt-3 border-t-2 border-slate-700 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-extrabold text-emerald-400 uppercase tracking-wide">🌱 Tambah:</span>
+                            <div class="flex gap-1.5">
+                                <button onclick="addPoints(1, 5, 'Kebaikan ✨')" class="bouncy bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-md">+5</button>
+                                <button onclick="addPoints(1, 10, 'Kebaikan Hebat 🌟')" class="bouncy bg-pink-600 hover:bg-pink-500 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-md">+10</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-extrabold text-rose-400 uppercase tracking-wide">⚠️ Kurang:</span>
+                            <div class="flex gap-1.5">
+                                <button onclick="addPoints(1, -5, 'Evaluasi 💢')" class="bouncy bg-slate-700 hover:bg-slate-600 text-rose-300 font-extrabold px-4 py-2.5 rounded-xl text-xs border border-rose-500/40 shadow-sm">-5</button>
+                                <button onclick="addPoints(1, -10, 'Pelanggaran 🛑')" class="bouncy bg-rose-700 hover:bg-rose-600 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-sm">-10</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Baris Miqdad (Blue Theme - Dominant Progress) -->
+                <div class="bg-slate-800/80 p-6 rounded-3xl border-3 border-sky-400/60 shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                            <div class="flex items-center gap-3">
+                                <!-- Avatar Foto / Icon Miqdad dengan tombol upload -->
+                                <div class="relative group cursor-pointer" onclick="document.getElementById('file-input-2').click()" title="Klik untuk ganti foto">
+                                    <div id="avatar-container-2" class="w-12 h-12 rounded-full bg-sky-500/30 border-2 border-sky-400 flex items-center justify-center overflow-hidden shadow-inner">
+                                        <span id="avatar-icon-2" class="text-2xl hidden">🚀</span>
+                                        <img id="avatar-img-2" src="image_f41961.jpg" class="w-full h-full object-cover" alt="Miqdad" />
+                                    </div>
+                                    <div class="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-[10px] font-bold">Ubah</div>
+                                </div>
+                                <input type="file" id="file-input-2" accept="image/*" class="hidden" onchange="handleImageUpload(event, 2)">
+                                <span class="text-2xl font-black text-sky-300" id="display-child2">Miqdad</span>
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-900 px-4 py-1.5 rounded-2xl border-2 border-sky-500/40 shadow-sm">
+                                <span class="text-xs font-bold text-sky-400 uppercase">Poin:</span>
+                                <span class="text-2xl sm:text-3xl font-black text-sky-300" id="score-child2">0</span>
+                                <span class="text-xs font-bold text-sky-500">/ 100</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ilustrasi Roket & Progress Bar Vertikal Miqdad -->
+                        <div class="mb-6 flex justify-center">
+                            <div class="w-full h-[315px] sm:h-[390px] bg-slate-950/70 rounded-2xl border-3 border-sky-500/40 shadow-inner relative flex items-center justify-center p-4 overflow-hidden">
+                                <!-- Track Pill Vertikal -->
+                                <div class="w-20 h-full bg-slate-900 rounded-full relative overflow-visible flex flex-col justify-end shadow-inner border-2 border-sky-500/50">
+                                    <!-- Bagian yang terisi dari bawah -->
+                                    <div id="progress-bar-fill-2" class="w-full bg-gradient-to-t from-sky-600 via-sky-500 to-blue-400 rounded-full transition-all duration-500 relative" style="height: 0%"></div>
+                                    
+                                    <!-- Roket yang berada tepat di permukaan atas progress bar -->
+                                    <div id="rocket-wrapper-2" class="absolute left-1/2 -translate-x-1/2 transition-all duration-500 z-20" style="bottom: 0px;">
+                                        <svg viewBox="0 0 100 140" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-lg overflow-visible">
+                                            <!-- Api Pendorong (Flame) -->
+                                            <g id="flame-group-2" opacity="0" class="transition-all duration-300">
+                                                <path d="M 43 100 L 50 130 L 57 100 Z" fill="#f97316"/>
+                                                <path d="M 46 100 L 50 120 L 54 100 Z" fill="#fde047"/>
+                                            </g>
+                                            <!-- Sayap / Fins Roket -->
+                                            <polygon points="35,80 43,70 43,100" fill="#0284c7"/>
+                                            <polygon points="65,80 57,70 57,100" fill="#0284c7"/>
+                                            <!-- Badan Roket -->
+                                            <rect x="43" y="50" width="14" height="50" rx="7" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+                                            <!-- Ujung Kerucut Roket -->
+                                            <path d="M 50 25 L 57 52 L 43 52 Z" fill="#0284c7"/>
+                                            <!-- Jendela Porthole -->
+                                            <circle cx="50" cy="65" r="4.5" fill="#38bdf8" stroke="#cbd5e1" stroke-width="2"/>
+                                            <!-- Hiasan Bintang di Roket -->
+                                            <text x="46" y="85" class="text-[9px]">⭐</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-3 right-4 text-xs font-black text-sky-300 bg-slate-900/90 backdrop-blur px-3 py-1 rounded-xl shadow-sm border border-sky-500/40">
+                                    <span id="progress-percent-2">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Cepat Miqdad -->
+                    <div class="pt-3 border-t-2 border-slate-700 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-extrabold text-emerald-400 uppercase tracking-wide">🌱 Tambah:</span>
+                            <div class="flex gap-1.5">
+                                <button onclick="addPoints(2, 5, 'Kebaikan ✨')" class="bouncy bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-md">+5</button>
+                                <button onclick="addPoints(2, 10, 'Kebaikan Hebat 🌟')" class="bouncy bg-sky-600 hover:bg-sky-500 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-md">+10</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-extrabold text-rose-400 uppercase tracking-wide">⚠️ Kurang:</span>
+                            <div class="flex gap-1.5">
+                                <button onclick="addPoints(2, -5, 'Evaluasi 💢')" class="bouncy bg-slate-700 hover:bg-slate-600 text-rose-300 font-extrabold px-4 py-2.5 rounded-xl text-xs border border-rose-500/40 shadow-sm">-5</button>
+                                <button onclick="addPoints(2, -10, 'Pelanggaran 🛑')" class="bouncy bg-rose-700 hover:bg-rose-600 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-sm">-10</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Custom Message Modal (Pengganti alert()) -->
+    <div id="message-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border-4 border-indigo-500/50 text-slate-100">
+            <div class="text-4xl mb-2">💡</div>
+            <h3 class="text-xl font-black text-indigo-300 mb-2" id="msg-title">Informasi</h3>
+            <p class="text-slate-300 text-sm mb-6 font-medium" id="msg-body">Pesan sistem...</p>
+            <button onclick="closeMessageModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-2xl shadow-md transition">Mengerti!</button>
+        </div>
+    </div>
+
+        <!-- Firebase SDK Imports & Cloud Storage Logic -->
+        <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+        let db, auth;
+        let isSyncing = false;
+
+        async function initFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Pastikan sesi login disimpan secara lokal agar tidak reset saat iframe/halaman direfresh
+                await setPersistence(auth, browserLocalPersistence);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                setupFirestoreSync();
+            } catch (e) {
+                console.log("Running in offline mode:", e);
+            }
+        }
+
+        function setupFirestoreSync() {
+            if (!auth.currentUser) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tracker_state', 'main');
+            
+            onSnapshot(docRef, (docSnap) => {
+                isSyncing = true;
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    state.score1 = data.score1 || 0;
+                    state.score2 = data.score2 || 0;
+                    state.avatar1 = data.avatar1 || 'https://images.unsplash.com/photo-1595454223607-cc5c77742c67?w=300&auto=format&fit=crop&q=80';
+                    state.avatar2 = data.avatar2 || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80';
+                    state.isGameOver = data.isGameOver || false;
+
+                    updateUI();
+                    checkWinnerUIOnly();
+                } else {
+                    saveStateToCloud();
+                }
+                isSyncing = false;
+            }, (error) => {
+                console.error("Firestore error:", error);
+                isSyncing = false;
+            });
+        }
+
+        window.saveStateToCloud = async function() {
+            if (isSyncing || !auth || !auth.currentUser || !db) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tracker_state', 'main');
+            try {
+                await setDoc(docRef, {
+                    score1: state.score1,
+                    score2: state.score2,
+                    avatar1: state.avatar1,
+                    avatar2: state.avatar2,
+                    isGameOver: state.isGameOver,
+                    updatedAt: new Date().toISOString()
+                });
+            } catch (e) {
+                console.error("Error saving state:", e);
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initFirebase();
+        });
+    </script>
+
+    <script>
+        // State Aplikasi
+        let state = {
+            child1Name: "Muadzah",
+            child2Name: "Miqdad",
+            score1: 0,
+            score2: 0,
+            avatar1: 'https://images.unsplash.com/photo-1595454223607-cc5c77742c67?w=300&auto=format&fit=crop&q=80',
+            avatar2: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80',
+            isGameOver: false
+        };
+
+        function handleImageUpload(event, childNum) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64String = e.target.result;
+                if (childNum === 1) {
+                    state.avatar1 = base64String;
+                } else {
+                    state.avatar2 = base64String;
+                }
+                updateAvatars();
+                if (typeof window.saveStateToCloud === 'function') window.saveStateToCloud();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateAvatars() {
+            const icon1 = document.getElementById('avatar-icon-1');
+            const img1 = document.getElementById('avatar-img-1');
+            if (state.avatar1) {
+                img1.src = state.avatar1;
+                img1.classList.remove('hidden');
+                icon1.classList.add('hidden');
+            } else {
+                img1.classList.add('hidden');
+                icon1.classList.remove('hidden');
+            }
+
+            const icon2 = document.getElementById('avatar-icon-2');
+            const img2 = document.getElementById('avatar-img-2');
+            if (state.avatar2) {
+                img2.src = state.avatar2;
+                img2.classList.remove('hidden');
+                icon2.classList.add('hidden');
+            } else {
+                img2.classList.add('hidden');
+                icon2.classList.remove('hidden');
+            }
+        }
+
+        function addPoints(childNum, points, desc) {
+            if (state.isGameOver) {
+                showModal("Petualangan Selesai!", "Salah satu jagoan sudah mencapai 100 poin! Silakan klik tombol 'Mulai Petualangan Baru' di atas untuk mereset.");
+                return;
+            }
+
+            if (childNum === 1) {
+                state.score1 = Math.max(0, state.score1 + points);
+            } else {
+                state.score2 = Math.max(0, state.score2 + points);
+            }
+
+            updateUI();
+            checkWinner();
+            if (typeof window.saveStateToCloud === 'function') window.saveStateToCloud();
+        }
+
+        function updateUI() {
+            document.getElementById('score-child1').innerText = state.score1;
+            document.getElementById('score-child2').innerText = state.score2;
+
+            // Update Ilustrasi Roket untuk Muadzah & Miqdad
+            updateRocketIllustration(1, state.score1);
+            updateRocketIllustration(2, state.score2);
+            updateAvatars();
+        }
+
+        function updateRocketIllustration(childNum, score) {
+            let s = Math.max(0, Math.min(100, score));
+            
+            const progressBarFill = document.getElementById(`progress-bar-fill-${childNum}`);
+            const progressPercent = document.getElementById(`progress-percent-${childNum}`);
+            const rocketWrapper = document.getElementById(`rocket-wrapper-${childNum}`);
+            const flameGroup = document.getElementById(`flame-group-${childNum}`);
+
+            if (progressBarFill) {
+                progressBarFill.style.height = `${s}%`;
+            }
+
+            if (progressPercent) {
+                progressPercent.innerText = `${s}%`;
+            }
+
+            if (rocketWrapper) {
+                let bottomPercent = Math.min(84, Math.max(0, s * 0.84));
+                rocketWrapper.style.bottom = `${bottomPercent}%`;
+            }
+
+            if (flameGroup) {
+                if (s > 0) {
+                    flameGroup.style.opacity = '1';
+                } else {
+                    flameGroup.style.opacity = '0';
+                }
+            }
+        }
+
+        function checkWinner() {
+            if (state.score1 >= 100 || state.score2 >= 100) {
+                state.isGameOver = true;
+                let winnerName = state.score1 >= 100 ? state.child1Name : state.child2Name;
+                let winnerAvatar = state.score1 >= 100 ? state.avatar1 : state.avatar2;
+                
+                let titleText = `🎉 ${winnerName.toUpperCase()} JUARANYA! 🎉`;
+                let descText = `${winnerName} hebat sekali berhasil mencapai 100 poin pertama dan berhak mendapatkan hadiah spesial!`;
+
+                document.getElementById('winner-title').innerText = titleText;
+                document.getElementById('winner-desc').innerText = descText;
+                document.getElementById('winner-banner').classList.remove('hidden');
+
+                // Tampilkan Pop-up Modal Otomatis
+                document.getElementById('modal-winner-title').innerText = titleText;
+                document.getElementById('modal-winner-desc').innerText = descText;
+                document.getElementById('modal-winner-img').src = winnerAvatar;
+                let modal = document.getElementById('winner-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function checkWinnerUIOnly() {
+            if (state.score1 >= 100 || state.score2 >= 100) {
+                let winnerName = state.score1 >= 100 ? state.child1Name : state.child2Name;
+                let winnerAvatar = state.score1 >= 100 ? state.avatar1 : state.avatar2;
+                let titleText = `🎉 ${winnerName.toUpperCase()} JUARANYA! 🎉`;
+                let descText = `${winnerName} hebat sekali berhasil mencapai 100 poin pertama dan berhak mendapatkan hadiah spesial!`;
+                
+                document.getElementById('winner-title').innerText = titleText;
+                document.getElementById('winner-desc').innerText = descText;
+                document.getElementById('winner-banner').classList.remove('hidden');
+                document.getElementById('modal-winner-img').src = winnerAvatar;
+            } else {
+                document.getElementById('winner-banner').classList.add('hidden');
+                document.getElementById('winner-modal').classList.remove('flex');
+                document.getElementById('winner-modal').classList.add('hidden');
+            }
+        }
+
+        function closeWinnerModal() {
+            let modal = document.getElementById('winner-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function resetGame() {
+            state.score1 = 0;
+            state.score2 = 0;
+            state.avatar1 = 'https://images.unsplash.com/photo-1595454223607-cc5c77742c67?w=300&auto=format&fit=crop&q=80';
+            state.avatar2 = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80';
+            state.isGameOver = false;
+            document.getElementById('winner-banner').classList.add('hidden');
+            document.getElementById('winner-modal').classList.remove('flex');
+            document.getElementById('winner-modal').classList.add('hidden');
+            updateUI();
+            if (typeof window.saveStateToCloud === 'function') window.saveStateToCloud();
+        }
+
+        function showModal(title, body) {
+            document.getElementById('msg-title').innerText = title;
+            document.getElementById('msg-body').innerText = body;
+            document.getElementById('message-modal').classList.remove('hidden');
+            document.getElementById('message-modal').classList.add('flex');
+        }
+
+        function closeMessageModal() {
+            document.getElementById('message-modal').classList.remove('flex');
+            document.getElementById('message-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
